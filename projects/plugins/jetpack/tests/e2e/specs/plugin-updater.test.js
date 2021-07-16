@@ -1,11 +1,6 @@
 import { step } from '../lib/env/test-setup';
 import { doInPlaceConnection } from '../lib/flows/jetpack-connect';
-import {
-	execWpCommand,
-	prepareUpdaterTest,
-	resetWordpressInstall,
-	execMultipleWpCommands,
-} from '../lib/utils-helper';
+import { execWpCommand, prepareUpdaterTest, resetWordpressInstall } from '../lib/utils-helper';
 import Sidebar from '../lib/pages/wp-admin/sidebar';
 import PluginsPage from '../lib/pages/wp-admin/plugins';
 import DashboardPage from '../lib/pages/wp-admin/dashboard';
@@ -23,18 +18,18 @@ describe( 'Jetpack updater', () => {
 	beforeAll( async () => {
 		await prepareUpdaterTest();
 
-		await execMultipleWpCommands(
-			'wp plugin deactivate jetpack-dev',
-			'wp option delete jetpack_sync_error_idc',
-			'wp plugin install --activate jetpack',
-			'wp plugin activate e2e-plugin-updater',
-			'wp option set e2e_jetpack_upgrader_update_version 8.8-alpha',
-			`wp option set e2e_jetpack_upgrader_plugin_url ${ siteUrl }/wp-content/uploads/jetpack.zip`
+		await execWpCommand( 'plugin deactivate jetpack-dev' );
+		await execWpCommand( 'option delete jetpack_sync_error_idc' );
+		await execWpCommand( 'plugin install --activate jetpack' );
+		await execWpCommand( 'plugin activate e2e-plugin-updater' );
+		await execWpCommand( 'option set e2e_jetpack_upgrader_update_version 8.8-alpha' );
+		await execWpCommand(
+			`option set e2e_jetpack_upgrader_plugin_url ${ siteUrl }/wp-content/uploads/jetpack.zip`
 		);
 	} );
 
 	afterAll( async () => {
-		await execWpCommand( 'wp plugin uninstall --deactivate jetpack' );
+		await execWpCommand( 'plugin uninstall --deactivate jetpack' );
 		await resetWordpressInstall();
 	} );
 

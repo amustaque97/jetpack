@@ -2,7 +2,7 @@ import BlockEditorPage from '../lib/pages/wp-admin/block-editor';
 import PostFrontendPage from '../lib/pages/postFrontend';
 import MailchimpBlock from '../lib/pages/wp-admin/blocks/mailchimp';
 import { syncJetpackPlanData } from '../lib/flows/jetpack-connect';
-import { activateModule, execMultipleWpCommands } from '../lib/utils-helper';
+import { activateModule, execWpCommand } from '../lib/utils-helper';
 import SimplePaymentBlock from '../lib/pages/wp-admin/blocks/simple-payments';
 import WordAdsBlock from '../lib/pages/wp-admin/blocks/word-ads';
 import { step } from '../lib/env/test-setup';
@@ -29,10 +29,8 @@ describe( 'Paid blocks', () => {
 	} );
 
 	afterAll( async () => {
-		await execMultipleWpCommands(
-			'wp jetpack module deactivate publicize',
-			'wp jetpack module deactivate wordads'
-		);
+		await execWpCommand( 'jetpack module deactivate wordads' );
+		await execWpCommand( 'jetpack module deactivate publicize' );
 	} );
 
 	it( 'MailChimp Block', async () => {

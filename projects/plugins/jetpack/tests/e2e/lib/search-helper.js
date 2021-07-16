@@ -11,26 +11,26 @@ import { execWpCommand } from './utils-helper';
 import config from 'config';
 
 export async function enableInstantSearch() {
-	return execWpCommand( 'wp option update instant_search_enabled 1' );
+	return execWpCommand( 'option update instant_search_enabled 1' );
 }
 
 export async function disableInstantSearch() {
-	return execWpCommand( 'wp option update instant_search_enabled 0' );
+	return execWpCommand( 'option update instant_search_enabled 0' );
 }
 
 export async function disableSearchModule() {
-	await execWpCommand( 'wp jetpack module deactivate search' );
+	await execWpCommand( 'jetpack module deactivate search' );
 }
 
 export async function setResultFormat( format = 'expanded' ) {
-	return execWpCommand( `wp option update jetpack_search_result_format ${ format }` );
+	return execWpCommand( `option update jetpack_search_result_format ${ format }` );
 }
 
 export async function getSidebarsWidgets() {
 	try {
 		const sidebarsWidgetsOption = 'sidebars_widgets';
 		const sidebarsWidgetsValue = await execWpCommand(
-			`wp option get ${ sidebarsWidgetsOption } --format=json`
+			`option get ${ sidebarsWidgetsOption } --format=json`
 		);
 		if ( typeof sidebarsWidgetsValue === 'object' ) {
 			throw sidebarsWidgetsValue;
@@ -48,7 +48,7 @@ export async function setupSidebarsWidgets( sidebarsWidgetsValue = getSidebarsWi
 	fs.writeFileSync( sidebarsWidgetsFilePath, JSON.stringify( sidebarsWidgetsValue ) );
 
 	return execWpCommand(
-		`wp option update ${ sidebarsWidgetsOption } --format=json <	${ sidebarsWidgetsFilePath }`
+		`option update ${ sidebarsWidgetsOption } --format=json <	${ sidebarsWidgetsFilePath }`
 	);
 }
 
@@ -59,7 +59,7 @@ export async function setupSearchWidget( searchWidgetValue = getSearchFiltersDat
 	fs.writeFileSync( searchWidgetFilePath, JSON.stringify( searchWidgetValue ) );
 
 	return execWpCommand(
-		`wp option update ${ searchWidgetOption } --format=json <	${ searchWidgetFilePath }`
+		`option update ${ searchWidgetOption } --format=json <	${ searchWidgetFilePath }`
 	);
 }
 

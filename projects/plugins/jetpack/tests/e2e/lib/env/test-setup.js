@@ -26,7 +26,7 @@ async function maybePreConnect() {
 	}
 
 	// We are connected. Let's save the existing connection options just in case.
-	const result = await execWpCommand( 'wp option get jetpack_private_options --format=json' );
+	const result = await execWpCommand( 'option get jetpack_private_options --format=json' );
 	fs.writeFileSync( config.get( 'temp.jetpackPrivateOptions' ), result.trim() );
 }
 

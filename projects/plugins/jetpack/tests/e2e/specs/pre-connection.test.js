@@ -2,7 +2,7 @@ import Sidebar from '../lib/pages/wp-admin/sidebar';
 import PluginsPage from '../lib/pages/wp-admin/plugins';
 import DashboardPage from '../lib/pages/wp-admin/dashboard';
 import JetpackPage from '../lib/pages/wp-admin/jetpack';
-import { execMultipleWpCommands, execWpCommand } from '../lib/utils-helper';
+import { execWpCommand } from '../lib/utils-helper';
 import path from 'path';
 import config from 'config';
 
@@ -15,10 +15,8 @@ process.env.SKIP_CONNECT = true;
  */
 describe( 'Jetpack pre-connection', () => {
 	beforeAll( async () => {
-		await execMultipleWpCommands(
-			'wp option delete jetpack_private_options',
-			'wp option delete jetpack_sync_error_idc'
-		);
+		await execWpCommand( 'option delete jetpack_private_options' );
+		await execWpCommand( 'option delete jetpack_sync_error_idc' );
 		await page.reload();
 	} );
 
@@ -28,7 +26,7 @@ describe( 'Jetpack pre-connection', () => {
 
 	afterAll( async () => {
 		await execWpCommand(
-			`wp option update jetpack_private_options --format=json < ${ path.resolve(
+			`option update jetpack_private_options --format=json < ${ path.resolve(
 				config.get( 'temp.jetpackPrivateOptions' )
 			) }`
 		);
@@ -38,7 +36,7 @@ describe( 'Jetpack pre-connection', () => {
 		await ( await Sidebar.init( page ) ).selectInstalledPlugins();
 
 		const pluginsPage = await PluginsPage.init( page );
-		await execWpCommand( 'wp transient set activated_jetpack true 120' );
+		await execWpCommand( 'transient set activated_jetpack true 120' );
 		await pluginsPage.reload();
 
 		expect( await pluginsPage.isFullScreenPopupShown() ).toBeTruthy();

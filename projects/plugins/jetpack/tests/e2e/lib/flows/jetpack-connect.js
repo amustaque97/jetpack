@@ -147,6 +147,5 @@ export async function loginToWpComIfNeeded( wpComUser, mockPlanData ) {
 export async function isBlogTokenSet() {
 	const cliCmd = 'jetpack options get blog_token';
 	const result = await execWpCommand( cliCmd );
-	console.log( 'ZZZZZZZZ', result );
 	return ! result.includes( 'Error: Option not found or is empty' );
 }
